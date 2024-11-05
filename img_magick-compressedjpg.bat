@@ -1,0 +1,1 @@
+magick %1 -quality 80 "%~p1%~n1_compress.jpg"

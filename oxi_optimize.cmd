@@ -1,0 +1,1 @@
+oxipng -o 4 --strip safe --dir "%userprofile%\Pictures\temp\optimized" %1

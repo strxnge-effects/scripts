@@ -1,0 +1,1 @@
+magick mogrify -dispose previous -coalesce -format gif "%~p1%~n1.webp"

@@ -1,0 +1,1 @@
+pandoc --wrap=none -t markdown %1 > "%~p1%~n1.md"
