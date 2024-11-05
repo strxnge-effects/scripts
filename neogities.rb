@@ -2,7 +2,7 @@
 
 # place this file in the same folder as .git, then change extension to .rb and
 # run from cmd line
-# only works *before* doing git commit or push
+# only works *before* doing git commit
 
 require "open3"
 require "neocities"
