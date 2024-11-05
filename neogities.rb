@@ -1,7 +1,6 @@
 # please create a backup of your site before running the script <3
 
-# place this file in the same folder as .git, then change extension to .rb and
-# run from cmd line
+# place this file in the same folder as .git and run from cmd line
 # only works *before* doing git commit
 
 require "open3"
