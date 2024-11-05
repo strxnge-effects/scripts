@@ -31,7 +31,7 @@ end
 
 for line in splitted
   if (line[0] == "M" || line[0] == "A") # modified / added
-    neogities.upload(line[1], line[1], true)
+    neogities.upload(line[1], line[1])
     print "uploading: " + line[1] + "\n"
   elsif line[0] == "D" # deleted
     neogities.delete(line[1])
@@ -40,7 +40,7 @@ for line in splitted
     split2 = line[1].split
     
     neogities.delete(split2[0]) # top 10 reasons to create a backup
-    neogities.upload(split2[2], split2[2], true)
+    neogities.upload(split2[2], split2[2])
     print("renaming: " + split2[0] + " to " + split2[2] + "\n")
   else # anything else idc
     print "completely ignoring: " + line[1] + "\n"
