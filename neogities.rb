@@ -2,46 +2,80 @@
 
 # place this file in the same folder as .git and run from cmd line
 # only works *before* doing git commit
+system "git add ."
 
 require "open3"
 require "neocities"
 
-configpath = File.join(Neocities::CLI.app_config_path("neocities"), "config.json")
+class Neogities
+  # = neocities gem setup
+  configpath = File.join(Neocities::CLI.app_config_path("neocities"), "config.json")
 
-begin # fetch api key
-  file = File.read configpath
-  data = JSON.load file
+  begin # fetch api key
+    file = File.read configpath
+    data = JSON.load file
 
-  if data
-    yourkey = data["API_KEY"].strip
+    if data
+      yourkey = data["API_KEY"].strip
+    end
+  rescue Errno::ENOENT
+    yourkey = nil
+    print "API key not found, please login usig the neocities module :("
   end
-rescue Errno::ENOENT
-  yourkey = nil
-  print "please login usig the neocities module :("
-end
 
-neogities = Neocities::Client.new(api_key: yourkey) # create new instance
+  @neogities = Neocities::Client.new(api_key: yourkey) # create new instance
 
-stdout, stdeerr, status = Open3.capture3("git status --porcelain")
+  # = uploading n things
+  def self.upload_file(path)
+    print "uploading file: " + path + "..."
+    resp = @neogities.upload(path, path)
+    self.display_response(resp)
+  end
 
-for line in stdout.split("\n")
-  splitted = Array(splitted) << line.split(" ", 2) # should allow for spaces in file names
-end
+  def self.delete_file(line)
+    print "deleting file: " + path + "..."
+    resp = @neogities.delete(path)
+    self.display_response(resp)
+  end
 
-for line in splitted
-  if (line[0] == "M" || line[0] == "A") # modified / added
-    neogities.upload(line[1], line[1])
-    print "uploading: " + line[1] + "\n"
-  elsif line[0] == "D" # deleted
-    neogities.delete(line[1])
-    print "deleting: " + line[1] + "\n"
-  elsif line[0] == "R" # renamed
-    split2 = line[1].split
-    
-    neogities.delete(split2[0]) # top 10 reasons to create a backup
-    neogities.upload(split2[2], split2[2])
-    print("renaming: " + split2[0] + " to " + split2[2] + "\n")
-  else # anything else idc
-    print "completely ignoring: " + line[1] + "\n"
+  def self.rename_file(line)
+    print("renaming file: " + split2[0] + " to " + split2[2] + "n") + "..."
+    split2 = path.split
+    resp = self.upload_file(split2[0]), self.delete_file(split2[0])
+    self.display_response(resp)
+  end
+
+  def self.display_response(resp) # copied this from the gem lol
+    if resp[:result] == 'success'
+      print "SUCCESS\n"
+    elsif resp[:result] == 'error' && resp[:error_type] == 'file_exists'
+      out = "EXISTS: " + resp[:message]
+      out += " (#{resp[:error_type]})" if resp[:error_type]
+      print out + "\n"
+    else
+      out = "ERROR: " + resp[:message]
+      out += " (#{resp[:error_type]})" if resp[:error_type]
+      print out + "\n"
+    end
+  end
+
+  stdout = Open3.capture3("git status --porcelain")[0]
+  print stdout
+
+  for line in stdout.split("\n")
+    splitted = Array(splitted) << line.split(" ", 2) # should allow for spaces in file names
+  end
+
+  # = do the thing
+  for line in splitted
+    if (line[0] == "M" || line[0] == "A") # modified / added
+      self.upload_file(line[1])
+    elsif line[0] == "D" # deleted
+      self.delete_file(line[1])
+    elsif line[0] == "R" # renamed
+      self.rename_file(line[1])
+    else # anything else idc
+      print "completely ignoring: " + line[1] + "\n"
+    end
   end
 end
