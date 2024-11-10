@@ -32,15 +32,15 @@ class Neogities
     self.display_response(resp)
   end
 
-  def self.delete_file(line)
+  def self.delete_file(path)
     print "deleting file: " + path + "..."
     resp = @neogities.delete(path)
     self.display_response(resp)
   end
 
   def self.rename_file(line)
+    split2 = line.split
     print("renaming file: " + split2[0] + " to " + split2[2] + "n") + "..."
-    split2 = path.split
     resp = self.upload_file(split2[0]), self.delete_file(split2[0])
     self.display_response(resp)
   end
@@ -72,7 +72,7 @@ class Neogities
     elsif line[0] == "D" # deleted
       self.delete_file(line[1])
     elsif line[0] == "R" # renamed
-      self.rename_file(line[1])
+      self.rename_file(line)
     else # anything else idc
       print "completely ignoring: " + line[1] + "\n"
     end
