@@ -62,7 +62,7 @@ class Neogities
   stdout = Open3.capture3("git status --porcelain")[0]
 
   for line in stdout.split("\n")
-    splitted = Array(splitted) << line.split(" ", 2) # should allow for spaces in file names
+    splitted = Array(splitted) << line.split(" ", 2) # nvm spaces will NOT work.. idk why.
   end
 
   # = do the thing
