@@ -2,8 +2,6 @@
 
 # place this file in the same folder as .git and run from cmd line
 # only works *before* committing changes
-system "git add ."
-
 require "open3"
 require "neocities"
 
@@ -58,6 +56,9 @@ class Neogities
       print out + "\n"
     end
   end
+
+  print "adding file contents to index :P\n"
+  system "git add ."
 
   stdout = Open3.capture3("git status --porcelain")[0]
 
