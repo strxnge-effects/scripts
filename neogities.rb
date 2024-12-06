@@ -2,11 +2,13 @@
 
 # place this file in the same folder as .git and run from cmd line
 # only works *before* committing changes
+
+# this thing is a fucking mess i'm sorry lol
 require "open3"
 require "neocities"
 
 class Neogities
-  # = neocities gem setup
+  # > neocities gem setup
   configpath = File.join(Neocities::CLI.app_config_path("neocities"), "config.json")
 
   begin # fetch api key
@@ -23,7 +25,7 @@ class Neogities
 
   @neogities = Neocities::Client.new(api_key: yourkey) # create new instance
 
-  # = uploading n things
+  # > uploading n things
   def self.upload_file(path)
     print "uploading file: " + path + "..."
     resp = @neogities.upload(path, path)
@@ -37,9 +39,10 @@ class Neogities
   end
 
   def self.rename_file(line)
-    split2 = line.split
-    print("renaming file: " + split2[0] + " to " + split2[2] + "n") + "..."
-    resp = self.upload_file(split2[0]), self.delete_file(split2[0])
+    split2 = line[1].split
+    print "renaming file: " + split2[0] + " to " + split2[2] + "\n" + "..."
+    resp = @neogities.upload(split2[2], split2[2])
+    self.delete_file(split2[0])
     self.display_response(resp)
   end
 
@@ -66,7 +69,7 @@ class Neogities
     splitted = Array(splitted) << line.split(" ", 2) # nvm spaces will NOT work.. idk why.
   end
 
-  # = do the thing
+  # > do the thing
   for line in splitted
     if (line[0] == "M" || line[0] == "A") # modified / added
       self.upload_file(line[1])
