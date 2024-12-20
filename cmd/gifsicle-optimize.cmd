@@ -1,0 +1,1 @@
+gifsicle %1 -O3 > "%~p1%~n1_optimize.gif"
