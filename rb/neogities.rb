@@ -3,8 +3,9 @@
 
 # place this file in the same folder as .git and run from cmd line
 # only works *before* committing changes
-require "open3"
 require "neocities"
+require "open3"
+require "tty-prompt"
 
 class Neogities
   # > neocities gem setup
@@ -47,19 +48,19 @@ class Neogities
 
   def self.display_response(resp) # copied this from the gem lol
     if resp[:result] == 'success'
-      print "SUCCESS\n"
+      puts "SUCCESS"
     elsif resp[:result] == 'error' && resp[:error_type] == 'file_exists'
       out = "EXISTS: " + resp[:message]
       out += " (#{resp[:error_type]})" if resp[:error_type]
-      print out + "\n"
+      puts out
     else
       out = "ERROR: " + resp[:message]
       out += " (#{resp[:error_type]})" if resp[:error_type]
-      print out + "\n"
+      puts out
     end
   end
 
-  print "adding file contents to index :P\n"
+  puts "adding file contents to index :p"
   system "git add ."
 
   stdout = Open3.capture3("git status --porcelain")[0]
@@ -77,13 +78,24 @@ class Neogities
     elsif line[0] == "R" # renamed
       self.rename_file(line)
     else # anything else idc
-      print "completely ignoring: " + line[1] + "\n"
+      puts "completely ignoring: #{line[1]}"
     end
   end
 
+
+  # > quick commit
   if (ARGV[0] == "-c" || ARGV[0] == "--commit")
-    system "git commit"
-    # quick commit. you still gotta write the message like normal
-    # todo: pass a message? as in `git commit -m <message>`
+    prompt = TTY::Prompt.new
+
+    result = prompt.collect do
+      key(:title).ask("commit message title:", required: true)
+      key(:body).ask("commit message body:")
+    end
+
+    unless result[:body] == nil
+      system "git commit -m #{result[:title]} -m #{result[:body]}"
+    else
+      system "git commit -m #{result[:title]}"
+    end
   end
 end
