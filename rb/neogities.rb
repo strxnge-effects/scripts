@@ -1,9 +1,8 @@
-# please create a backup of your site before running the script <3
+# forewarning: this script is janky af, use at your own risk. please create a
+# backup of your site before running it <3
 
 # place this file in the same folder as .git and run from cmd line
 # only works *before* committing changes
-
-# this thing is a fucking mess i'm sorry lol
 require "open3"
 require "neocities"
 
@@ -80,5 +79,11 @@ class Neogities
     else # anything else idc
       print "completely ignoring: " + line[1] + "\n"
     end
+  end
+
+  if (ARGV[0] == "-c" || ARGV[0] == "--commit")
+    system "git commit"
+    # quick commit. you still gotta write the message like normal
+    # todo: pass a message? as in `git commit -m <message>`
   end
 end
