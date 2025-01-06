@@ -93,9 +93,9 @@ class Neogities
     end
 
     unless result[:body] == nil
-      system "git commit -m #{result[:title]} -m #{result[:body]}"
+      system 'git commit -m "' + result[:title] + '" -m "' + result[:body] + '"'
     else
-      system "git commit -m #{result[:title]}"
+      system 'git commit -m "' + result[:title]
     end
   end
 end
