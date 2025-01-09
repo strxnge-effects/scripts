@@ -88,14 +88,14 @@ class Neogities
     prompt = TTY::Prompt.new
 
     result = prompt.collect do
-      key(:title).ask("commit message title:", required: true)
+      key(:title).ask("\ncommit message title:", required: true)
       key(:body).ask("commit message body:")
     end
 
     unless result[:body] == nil
       system 'git commit -m "' + result[:title] + '" -m "' + result[:body] + '"'
     else
-      system 'git commit -m "' + result[:title]
+      system 'git commit -m "' + result[:title] + '"'
     end
   end
 end
