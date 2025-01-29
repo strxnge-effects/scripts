@@ -1,0 +1,1 @@
+ffmpeg -i %1 -map 0:a:0 -b:a 196k "%~p1%~n1_196k.mp3"
