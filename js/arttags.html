@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>tumblr art tags</title>
+	<link href="style.css" rel="stylesheet">
+
+	<style>
+	</style>
+</head>
+
+<body>
+<div class="row">
+	<div class="column">
+		<h1>tumblr art tags</h1>
+
+		<form>
+		<fieldset>
+			<legend>default tags</legend>
+
+			<label>
+				<input type="checkbox" value="art" name="taggs" checked>
+				#art
+			</label>
+
+			<label>
+				<input type="checkbox" value="artists on tumblr" name="taggs" checked>
+				#artists on tumblr
+			</label>
+		</fieldset>
+
+		<fieldset>
+			<legend>medium</legend>
+
+			<label>
+				<input type="checkbox" value="digital art" name="taggs">
+				#digital art
+			</label>
+
+			<label>
+				<input type="checkbox" value="traditional art" name="taggs">
+				#traditional art
+			</label>
+
+			<label>
+				<input type="checkbox" value="other media" name="taggs">
+				#other media
+			</label>
+		</fieldset>
+
+		<fieldset>
+			<legend>attributes</legend>
+
+			<label>
+				<input type="checkbox" value="doodle" name="taggs">
+				#doodle
+			</label>
+
+			<label>
+				<input type="checkbox" value="ms paint" name="taggs">
+				#ms paint
+			</label>
+
+			<label>
+				<input type="checkbox" value="painting" name="taggs">
+				#painting
+			</label>
+
+			<label>
+				<input type="checkbox" value="animation" name="taggs">
+				#animation
+			</label>
+		</fieldset>
+
+		<fieldset>
+			<legend>character</legend>
+
+			<label>
+				<input type="checkbox" value="my character" name="taggs">
+				#my character
+			</label>
+
+			<label>
+				<input type="checkbox" value="character: " name="taggs" id="namecheck">
+				#character:
+
+				<select name="charname" id="charname">
+					<option value=""></option>
+					<option value="dorian">dorian</option>
+					<option value="raven">raven</option>
+					<option value="alexandra">alexandra</option>
+					<option value="lucy">lucy</option>
+					<option value="valentine">valentine</option>
+					<option value="renata">renata</option>
+				</select>
+			</label>
+		</fieldset>
+
+		<fieldset>
+			<legend>fanart</legend>
+
+			<label>
+				<input type="checkbox" value="fanart" name="taggs">
+				#fanart
+			</label>
+
+			<label>
+				<input type="checkbox" value="fan character" name="taggs">
+				#fan character
+			</label>
+		</fieldset>
+
+		<fieldset>
+			<legend>alt text</legend>
+
+			<label>
+				<input type="checkbox" value="described in alt text" name="taggs">
+				#described in alt text
+			</label>
+		</fieldset>
+		</form>
+	</div>
+
+
+	<div class="column">
+		<textarea id="outputText" cols="40" rows="7">art,artists on tumblr</textarea>
+
+		<div class="row">
+			<button id="gen">generate</button>
+			<button onclick="copyy(outputText)">copy text</button>
+		</div>
+	</div>
+</div>
+
+<script>
+	const button = document.querySelector("#gen");
+	const form = document.querySelector("form");
+	const textbox = document.querySelector("#outputText");
+	const namecheck = document.querySelector("#namecheck");
+	var checkboxies = form.elements["taggs"];
+
+	button.addEventListener("click", () => {
+		const outText = [];
+
+		if (namecheck.checked) {
+			var charname = document.getElementById("charname").value;
+			namecheck.setAttribute("value", `character: ${charname}`);
+			console.log(namecheck.value);
+		}
+
+		for(var i = 0, max = checkboxies.length; i < max; i++) {
+			if (checkboxies[i].checked) {
+				outText.push(checkboxies[i].value);
+			}
+		};
+
+		textbox.innerHTML = outText.toString();
+	});
+
+	
+	function copyy(thang) {
+		thang.select();
+		navigator.clipboard.writeText(thang.value);
+	}
+</script>
+</body>
+</html>

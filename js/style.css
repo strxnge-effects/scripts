@@ -1,0 +1,111 @@
+:root {
+  --color-bg: black;
+  --color-fg: white;
+  --color-accent: darkviolet;
+  --borders: 2px solid;
+}
+
+body {
+  color: var(--color-fg);
+  background-color: var(--color-bg);
+  line-height: 130%;
+  padding: 2% 6%;
+}
+
+h1 {
+  margin-bottom: 6.5%;
+}
+
+fieldset {
+  margin: 14px auto;
+}
+
+textarea {
+  color: var(--color-fg);
+  background-color: var(--color-bg);
+  font-size: 1.1em;
+  border: var(--borders);
+  display: block;
+  margin: auto;
+}
+
+legend {
+  background-color: var(--color-bg);
+  font-weight: bold;
+  text-align: center;
+  margin-left: 1ch;
+  padding: 0 1ch;
+}
+
+button, select, option {
+  font: 1em monospace;
+  color: var(--color-fg);
+  background-color: var(--color-bg);
+  border: var(--borders);
+
+  &:hover {
+    color: var(--color-accent);
+  }
+}
+
+button {
+  margin-top: 5%;
+}
+
+label {
+  margin-right: 2px;
+}
+
+input[type="checkbox"] {
+  appearance: none;
+  width: 12px;
+  height: 12px;
+  border: 2px solid gray;
+  top: 3px;
+  position: relative;
+
+  &:checked {
+    border: 6px solid var(--color-accent);
+  }
+}
+
+.row {
+  display: flex;
+
+  &:has(> #gen) {
+    justify-content: center;
+
+  }
+}
+
+.column {
+  flex: 50%;
+  margin: auto 1em;
+}
+
+::selection {
+  color: var(--color-bg);
+  background-color: var(--color-accent);
+}
+
+
+@media only screen and (max-width: 950px) {
+  body {
+    padding: 2% 12% 4%;
+  
+    > .row {
+      display: unset;
+    }
+  }
+  .column:first-child {
+    margin-bottom: 5%;
+  }
+}
+
+.flex {
+  display: flex;
+
+  > div {
+    width: 50%;
+  }
+}
