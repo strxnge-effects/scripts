@@ -1,5 +1,5 @@
-import {markdownTable} from 'markdown-table';
-import {marked} from 'marked';
+import {markdownTable} from "markdown-table";
+import {marked} from "marked";
 
 
 fetch("https://status.cafe/users/transneptunianobject/status.json")
