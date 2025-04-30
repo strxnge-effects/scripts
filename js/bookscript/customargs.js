@@ -18,8 +18,14 @@ prompt.get(["title", "author", "date"], function (err, result) {
     };
 
 
-    const d = new Date(result.date);
-    myObj.date = `${months[d.getMonth()]} ${d.getDate()}`;
+    if (result.date) {
+      const d = new Date(result.date);
+      myObj.date = `${months[d.getMonth()]} ${d.getDate()}`;
+
+    } else {
+      const d = new Date();
+      myObj.date = `${months[d.getMonth()]} ${d.getDate()}`;
+    }
 
 
     // > markdown table
