@@ -1,7 +1,7 @@
 :root {
   --color-bg: black;
-  --color-fg: white;
-  --color-accent: darkviolet;
+  --color-fg: seashell;
+  --color-accent: #8400ff;
   --borders: 2px solid;
 }
 
@@ -30,11 +30,12 @@ textarea {
 }
 
 legend {
-  background-color: var(--color-bg);
+  background-color: var(--color-fg);
+  color: var(--color-bg);
   font-weight: bold;
   text-align: center;
-  margin-left: 1ch;
-  padding: 0 1ch;
+  margin-left: 10px;
+  padding: 2px 6px;
 }
 
 button, select, option {
