@@ -1,41 +1,51 @@
 :root {
-  --color-bg: black;
-  --color-fg: seashell;
-  --color-accent: #8400ff;
-  --borders: 2px solid;
+  --color-bg: #191724;
+  --color-bg-2: #1f1d2e;
+  --color-fg: #e0def4;
+  --color-accent: #c4a7e7;
+  --color-select: #403d52;
+  --borders: 1px solid;
 }
 
 body {
   color: var(--color-fg);
   background-color: var(--color-bg);
   line-height: 130%;
-  padding: 2% 6%;
+  margin: 6% 10%;
 }
 
 h1 {
-  margin-bottom: 6.5%;
+  color: var(--color-bg);
+  background-color: var(--color-fg);
+  padding: 10px 6px;
+  display: table;
+  margin-bottom: 2px;
 }
 
 fieldset {
   margin: 14px auto;
+  border: var(--borders);
+}
+
+textarea, input {
+  color: var(--color-fg);
+  background-color: var(--color-bg-2);
+  border: var(--borders);
+  font: 1em monospace;
 }
 
 textarea {
-  color: var(--color-fg);
-  background-color: var(--color-bg);
-  font-size: 1.1em;
-  border: var(--borders);
-  display: block;
   margin: auto;
+  display: block;
 }
 
 legend {
-  background-color: var(--color-fg);
   color: var(--color-bg);
+  background-color: var(--color-fg);
+  padding: 2px 6px;
   font-weight: bold;
   text-align: center;
   margin-left: 10px;
-  padding: 2px 6px;
 }
 
 button, select, option {
@@ -75,18 +85,21 @@ input[type="checkbox"] {
 
   &:has(> #gen) {
     justify-content: center;
+  }
 
+  button {
+    margin: 16px 4px;
   }
 }
 
 .column {
   flex: 50%;
-  margin: auto 1em;
+  /* margin: auto; */
 }
 
 ::selection {
-  color: var(--color-bg);
-  background-color: var(--color-accent);
+  /* color: var(--color-bg); */
+  background-color: var(--color-select);
 }
 
 
