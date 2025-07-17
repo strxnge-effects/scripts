@@ -11,6 +11,16 @@ import {parse} from 'node-html-parser';
 const argv = minimist(process.argv.slice(2));
 
 
+// setup values for later use
+var myObj = {
+  "title": "",
+  "author": "",
+  "date": ""
+};
+
+const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+
 // > functions
 // >> showHelp
 function showHelp() {
@@ -36,19 +46,24 @@ status.cafe, and use today's date`;
   console.log(helpMessage);
 }
 
+// >> doubleDigitsDate
+function doubleDigitsDate(input) {
+  // if given day of month is single digit, add 0 to beginning (for aesthetic
+  // purposes)
+  const dateSplit = input.split(" ")
+
+  if (dateSplit[1].length == 1) {
+    myObj.date = `${dateSplit[0]} 0${dateSplit[1]}`;
+  }
+}
+
 // >> generateTables
 function generateTables(input) {
-  const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-
-  // create object to convert into tables
-  var myObj = {
-    "title": input.title,
-    "author": input.author,
-    "date": ""
-  };
+  myObj.title = input.title;
+  myObj.author = input.author;
 
   if (input.date) {
-    // use custom date
+    // use custom date if provided
     const d = new Date(input.date);
     myObj.date = `${months[d.getMonth()]} ${d.getDate()}`;
   } else {
@@ -57,8 +72,7 @@ function generateTables(input) {
     myObj.date = `${months[d.getMonth()]} ${d.getDate()}`;
   }
 
-  // todo: if day of the month is single digit, eg Mar 1, add 0 so that it's
-  // Mar 01 :)
+  doubleDigitsDate(myObj.date);
 
   let mdOutput = markdownTable([
     // create markdown table
