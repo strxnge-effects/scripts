@@ -25,20 +25,18 @@ const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "
 // >> showHelp
 function showHelp() {
   const helpMessage =
-`bookscript.js
-=============
+`== bookscript.js ==
 
 small script to speed up manual updates to my reading log: markdown
 output for obsidian, HTML for the neocities site
 
-
-arguments
----------
+-- arguments --
 
 -c          toggle prompt for custom input
 -d <value>  use given date when fetching from status.cafe
 -h          show this help message
--o <value>  write to output.txt
+-o          write results to output.txt and open in default text
+            editor
 
 without custom input, the script will pull the title + author from
 status.cafe, and use today's date`;
@@ -160,7 +158,6 @@ ${mdIn}
 
 // > parse arguments
 if (argv.h) {
-  console.log("displaying help message...");
   showHelp();
 } else if (argv.c) {
   console.log("using custom arguments...");
