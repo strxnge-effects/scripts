@@ -11,7 +11,7 @@ import {parse} from 'node-html-parser';
 const argv = minimist(process.argv.slice(2));
 
 
-// setup values for later use
+// setup JSON obj for later use
 var myObj = {
   "title": "",
   "author": "",
@@ -35,8 +35,7 @@ output for obsidian, HTML for the neocities site
 -c          toggle prompt for custom input
 -d <value>  use given date when fetching from status.cafe
 -h          show this help message
--o          write results to output.txt and open in default text
-            editor
+-p          print results to command line (defaults to txt file)
 
 without custom input, the script will pull the title + author from
 status.cafe, and use today's date`;
@@ -82,11 +81,10 @@ function generateTables(input) {
   const slicedHTML = `${parse(htmlOutput).getElementsByTagName("tr")[1].toString()}\n`;
   // slice html to only include relevant tr
 
-  if (argv.o) {
-    writeToFile(slicedHTML, mdOutput);
+  if (argv.p) {
+    printToCmd(slicedHTML, mdOutput)
   } else {
-    console.log(slicedHTML);
-    console.log(mdOutput);
+    writeToFile(slicedHTML, mdOutput);
   }
 }
 
@@ -154,6 +152,14 @@ ${mdIn}
 
   console.log("opening output.txt...")
   open("output.txt"); // open in default text editor
+}
+
+// >> printToCmd
+function printToCmd(slicedHTML, mdOutput) {
+  console.log("printing output...")
+
+  console.log(slicedHTML);
+  console.log(mdOutput);
 }
 
 // > parse arguments
