@@ -82,7 +82,7 @@ function generateTables(input) {
   // slice html to only include relevant tr
 
   if (argv.p) {
-    printToCmd(slicedHTML, mdOutput)
+    printToCmd(slicedHTML, mdOutput);
   } else {
     writeToFile(slicedHTML, mdOutput);
   }
@@ -121,10 +121,15 @@ function fetchStatusCafe() {
       result.author = coolArray[1];
 
       if (argv.d) { // use custom date
-        result.date = argv.d;
-      }
+        prompt.start();
 
-      generateTables(result);
+        prompt.get(["date"], function (err, a) {
+          if (err) { return onErr(err); }
+          
+          result.date = a.date;
+          generateTables(result);
+        });
+      }
   });
 }
 
@@ -150,13 +155,13 @@ ${mdIn}
     }
   });
 
-  console.log("opening output.txt...")
+  console.log("opening output.txt...");
   open("output.txt"); // open in default text editor
 }
 
 // >> printToCmd
 function printToCmd(slicedHTML, mdOutput) {
-  console.log("printing output...")
+  console.log("printing output...");
 
   console.log(slicedHTML);
   console.log(mdOutput);
