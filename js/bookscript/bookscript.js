@@ -1,12 +1,12 @@
 #!/usr/bin/env node
-import minimist from 'minimist';
+import minimist from "minimist";
 import prompt from "prompt";
-import open, {openApp, apps} from 'open';
-import * as fs from 'node:fs/promises';
+import open, {openApp, apps} from "open";
+import * as fs from "node:fs/promises";
 
 import {markdownTable} from "markdown-table";
 import {marked} from "marked";
-import {parse} from 'node-html-parser';
+import {parse} from "node-html-parser";
 
 const argv = minimist(process.argv.slice(2));
 
@@ -129,7 +129,10 @@ function fetchStatusCafe() {
           result.date = a.date;
           generateTables(result);
         });
+      } else {
+        generateTables(result);
       }
+
   });
 }
 
