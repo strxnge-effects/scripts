@@ -1,1 +1,1 @@
-gifsicle %1 -O3 --lossy --colors=128 > "%~p1%~n1_compress.gif"
+gifsicle %1 -O3 --lossy=100 --colors=128 > "%~p1%~n1_compress.gif"

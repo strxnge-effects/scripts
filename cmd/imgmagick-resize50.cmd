@@ -1,1 +1,1 @@
-magick %1 -filter Point -resize 50%% "%~p1%~n1_resize50.png"
+magick %1 -resize 50%% "%~p1%~n1_resize50.png"
