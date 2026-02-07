@@ -1,1 +1,0 @@
-ffmpeg -i %1 -af aformat=s16:44100 "%~p1%~n1.flac"

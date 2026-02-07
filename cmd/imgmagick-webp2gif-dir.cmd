@@ -1,1 +1,0 @@
-magick mogrify -dispose previous -coalesce -format gif *.webp

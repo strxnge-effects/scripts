@@ -1,1 +1,0 @@
-pandoc --wrap=none -t html %1 > "%~p1%~n1.html"
