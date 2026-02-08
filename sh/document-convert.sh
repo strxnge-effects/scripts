@@ -1,11 +1,12 @@
 #!/bin/bash
-filename=${1%.*}
-filetype=${1##*.}
 f=$1
+filename=${f%.*}
+filetype=${f##*.}
+filepath=$(dirname "$f")
 
 function html {
-    if [[ $filetype == "rtf" ]]; then
-        soffice --headless --convert-to html "${f}"
+    if [[ $filetype == "rtf" || $filetype == "fodt" ]]; then
+        soffice --headless --convert-to html --outdir $filepath "${f}"
     else
         pandoc --wrap=none -t html "${f}" > "$filename.html"
     fi
@@ -13,8 +14,8 @@ function html {
 }
 
 function md {
-    if [[ $filetype == "rtf" ]]; then
-        soffice --headless --convert-to markdown "${f}"
+    if [[ $filetype == "rtf" || $filetype == "fodt" ]]; then
+        soffice --headless --convert-to markdown --outdir $filepath "${f}"
     else
         pandoc --wrap=none -t markdown "${f}" > "$filename.md"
     fi
@@ -22,8 +23,8 @@ function md {
 }
 
 function txt {
-    if [[ $filetype == "rtf" ]]; then
-        soffice --headless --convert-to txt "${f}"
+    if [[ $filetype == "rtf" || $filetype == "fodt" ]]; then
+        soffice --headless --convert-to txt --outdir $filepath "${f}"
     else
         pandoc "${f}" -t plain > "$filename.txt"
     fi
@@ -49,12 +50,6 @@ function begin {
             ;;
         3)
             txt
-            ;;
-        exit)
-            exit
-            ;;
-        *)
-            echo please make a selection or type "exit"
             ;;
     esac
 }
