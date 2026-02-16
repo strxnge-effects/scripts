@@ -10,7 +10,7 @@ set /p op=your selection:
 if %op%==1 goto comp
 if %op%==2 goto opt
 if %op%==3 goto resize
-if %op%==exit @exit
+if %op%==exit goto eof
 
 echo please make a selection or type "exit"
 goto begin

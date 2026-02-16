@@ -11,7 +11,7 @@ set /p op=your selection:
 if %op%==1 goto 128kmp3
 if %op%==2 goto 196kmp3
 if %op%==3 goto flac
-if %op%==exit @exit
+if %op%==exit goto eof
 
 echo please make a selection or type "exit"
 goto begin
@@ -34,7 +34,11 @@ if %filetype%==.mp3 (
 goto eof
 
 :flac
-ffmpeg -i %1 -af aformat=s16:44100 "%~p1%~n1.flac"
+if %filetype%==.flac (
+    ffmpeg -i %1 -af aformat=s16:44100 "%~p1%~n1-1.flac"
+) else (
+    ffmpeg -i %1 -af aformat=s16:44100 "%~p1%~n1.flac"
+)
 goto eof
 
 :eof

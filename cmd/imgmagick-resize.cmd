@@ -11,7 +11,7 @@ echo 2) nearest neighbor
 set /p op=your selection: 
 if %op%==1 goto default
 if %op%==2 goto point
-if %op%==exit @exit
+if %op%==exit goto eof
 
 :default
 magick %1 -resize %pcent%%% "%~p1%~n1-resize%~x1"

@@ -11,7 +11,7 @@ set /p op=your selection:
 if %op%==1 goto html
 if %op%==2 goto md
 if %op%==3 goto txt
-if %op%==exit @exit
+if %op%==exit goto eof
 
 echo please make a selection or type "exit"
 goto begin
