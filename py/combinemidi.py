@@ -2,13 +2,8 @@
 import cmd
 from mido import Message, MidiFile, MidiTrack, MetaMessage
 
-# set up variables
-mid = MidiFile()
-track = MidiTrack()
-mid.tracks.append(track)
-
 # type 1 midi file: all tracks start at the same time
-combinedmidi = MidiFile(type=1)
+outputmidi = MidiFile(type=1)
 
 # the actual window thing
 class combinemidi(cmd.Cmd):
@@ -16,7 +11,8 @@ class combinemidi(cmd.Cmd):
     prompt = "combine midi>>"
 
     def do_combine(self, line):
-        "combines 2 midi files\nsyntax: combine file1.mid file2.mid"
+        """combine the tracks from 2 midi files into 1
+        syntax: combine file1.mid file2.mid"""
         
         # split the input for use
         args = line.split()
@@ -26,21 +22,25 @@ class combinemidi(cmd.Cmd):
 
         if midi1.ticks_per_beat != midi2.ticks_per_beat:
             print("tempos and/or time signatures do not match.")
+
         else:
+            # name output using 1st input
+            filename = f"{args[0].split(".")[0]}-combined.mid"
+
             # since the ticks-per-beat match, it uses the value from the first midi file
-            combinedmidi.ticks_per_beat = midi1.ticks_per_beat
+            outputmidi.ticks_per_beat = midi1.ticks_per_beat
 
             # tracks from the first file + tracks from the second file = all tracks in the output
-            combinedmidi.tracks = midi1.tracks + midi2.tracks
-            combinedmidi.save("combined.mid")
+            outputmidi.tracks = midi1.tracks + midi2.tracks
+            outputmidi.save(filename)
 
             # letting you know it's done :)
-            print("file output to \"combined.mid\"")
+            print(f"file output to \"{filename}\"")
+            return True
+
 
     def do_exit(self, line):
         "exits the program"
-    
-        # exits the program
         return True
 
 if __name__ == "__main__":
