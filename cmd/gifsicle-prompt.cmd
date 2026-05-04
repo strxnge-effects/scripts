@@ -1,7 +1,7 @@
 echo off
 :begin
 echo GIFSICLE-PROMPT
-echo ==========
+echo ===============
 echo select operation for file %1:
 echo 1) compress
 echo 2) optimize

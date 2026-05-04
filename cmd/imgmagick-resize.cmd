@@ -1,7 +1,7 @@
 echo off
 :begin
 echo IMGMAGICK-RESIZE
-echo ==========
+echo ================
 set /p pcent=percentage to resize the image by: 
 if %pcent%==exit @exit
 

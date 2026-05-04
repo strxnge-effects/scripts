@@ -2,7 +2,7 @@ echo off
 :begin
 set filetype=%~x1
 echo FFMPEG-CONVERT
-echo ==========
+echo ==============
 echo select conversion for file %1:
 echo 1) 128kbps mp3 conversion
 echo 2) 196kbps mp3 conversion

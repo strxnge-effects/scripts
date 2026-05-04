@@ -2,7 +2,7 @@ echo off
 :begin
 set filetype=%~x1
 echo DOCUMENT-CONVERT
-echo ==========
+echo ================
 echo select conversion for file %1:
 echo 1) to html
 echo 2) to markdown
