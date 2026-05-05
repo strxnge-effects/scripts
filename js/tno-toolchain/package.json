@@ -1,8 +1,0 @@
-{
-  "type": "module",
-  "dependencies": {
-    "html-format": "^1.1.7",
-    "node-pandoc": "^0.3.0",
-    "prompt": "^1.3.0"
-  }
-}
