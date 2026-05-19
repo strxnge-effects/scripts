@@ -1,35 +1,8 @@
+#!/usr/bin/env ruby
 require "highline"
 require "paru/pandoc"
 
 class Toolchain
-  def self.read_file
-    cli = HighLine.new
-
-    if ARGV.size != 1
-    # prompt for path if not given as arg
-      @f = cli.ask "path: "
-    else
-      @f = ARGV[0]
-    end
-
-    fname = @f.split(".")[0]
-    fext = @f.split(".")[-1]
-
-    case fext
-    when "md"
-      inputformat = "markdown-auto_identifiers"
-    when "odt"
-      inputformat = "odt"
-    # when "rtf"
-    # todo: rtf
-    #   inputformat = "rtf"
-    else
-      puts "unknown format"
-    end
-
-    self.convert_to_html(fname, fext, inputformat)
-  end
-
   def self.convert_to_html(fname, fext, inputformat)
     converter = Paru::Pandoc.new
 
@@ -38,6 +11,7 @@ class Toolchain
         to "html"
         filter "get-title.rb"
         template "template.html"
+        # todo: writing template
         output "#{fname}.html"
     end
 
@@ -45,5 +19,25 @@ class Toolchain
     puts "output to #{fname}.html"
   end
 
-  self.read_file
+
+  cli = HighLine.new
+
+  if ARGV.size != 1
+  # prompt for path if not given as arg
+    @f = cli.ask "path: "
+  else
+    @f = ARGV[0]
+  end
+
+  fname = @f.split(".")[0].delete('"')
+  fext = @f.split(".")[-1].delete('"')
+
+  case fext
+  when "md", "txt"
+    self.convert_to_html(fname, fext, "markdown-auto_identifiers")
+  when "fodt", "rtf"
+    warn "unsupported file type: #{fext}"
+  else
+    self.convert_to_html(fname, fext, fext)
+  end
 end

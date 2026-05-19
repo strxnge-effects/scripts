@@ -16,3 +16,5 @@ Paru::Filter.run do
     end
   end
 end
+
+# todo: apply .pb to horizontal rules
