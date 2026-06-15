@@ -1,16 +1,13 @@
-default: {
-  # autofallback: true,
-  --path: "~\\Documents\\MangaDex",
-  --save-as: "pdf-volume",
-  -lang: "en",
-  -sc: ,
+default:
+  --path: ~\Documents\MangaDex
+  --save-as: pdf-volume
+  -lang: en
+  -sc:
   -ec:
-}
 
-custom: {
-  --path: "~\\Documents\\MangaDex",
-  --save-as: "cbz-volume",
-  -lang: "en",
-  -sc: 0,
+custom:
+  --path: ~\Documents\MangaDex
+  --save-as: cbz-volume
+  -lang: en
+  -sc: 0
   -ec: 1
-}

@@ -1,27 +1,20 @@
 import cmd
 import os
-import configparser
+import yaml
 
-# read args from settings.ini
-configparsed = configparser.ConfigParser(allow_no_value=True)
-configparsed.read("settings.ini")
+with open("settings.yaml", "r") as file:
+    settings = yaml.safe_load(file)
 
 defaultargs = []
 customargs = []
 
-# = autofallback
-# was thinking i could include some sort of fallback for the custom settings --
-# if an option doesn't exist / is blank, then ask whether to use the value for
-# default. or maybe that could even be a setting you toggle, what to do in that
-# case.
 def getargs(section, argstr):
-    # make respective lists of arguments
+    # fetch respective lists of arguments
     templi = ""
 
-    for key in configparsed[section]:
-        if configparsed[section][key]:
-            # if key has a value then uhhhh. use it
-            templi += key + " " + configparsed[section][key] + " "
+    for key in settings[section]:
+        if settings[section][key]:
+            templi += key + " " + str(settings[section][key]) + " "
 
     argstr.append(templi)
 
