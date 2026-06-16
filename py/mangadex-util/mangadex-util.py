@@ -2,6 +2,8 @@ import cmd
 import os
 import yaml
 
+
+# > yaml settings
 with open("settings.yaml", "r") as file:
     settings = yaml.safe_load(file)
 
@@ -14,7 +16,11 @@ def getargs(section, argstr):
 
     for key in settings[section]:
         if settings[section][key]:
-            templi += key + " " + str(settings[section][key]) + " "
+            if "~" in str(settings[section][key]):
+            # expand user path
+                templi += key + " " + os.path.expanduser(str(settings[section][key])) + " "
+            else:
+                templi += key + " " + str(settings[section][key]) + " "
 
     argstr.append(templi)
 
@@ -22,38 +28,37 @@ getargs("default", defaultargs)
 getargs("custom", customargs)
 
 
-# = CLI functions
+# > CLI functions
 class md_dl(cmd.Cmd):
-    # intro = "lil script thing for mangadex-downloader\ntype 'help' for a list of commands"
     prompt = "mangadex-util>>"
 
-    # == do_dl
+    # >> do_dl
     def do_dl(self, line):
         # input a URL to download from
         "syntax: dl url [--custom]"
 
-        line = line.split()
-        url = line[0]
+        args = line.split()
+        url = args[0]
 
         thecommand = "mangadex-dl " + '"' + url + '" '
 
         try:
-            # check for custom arguments. there HAS to be a better way than this!
-            if line[1] == "-c" or "--custom":
+            if "--custom" in args:
                 print("using custom arguments...")
                 thecommand += " ".join(customargs)
-        except IndexError:
-            print("using default arguments...")
-            thecommand += " ".join(defaultargs)
+            else:
+                print("using default arguments...")
+                thecommand += " ".join(defaultargs)
 
-        # execute command in terminal
-        os.system(thecommand)
+            os.system(thecommand)
+        except Exception as e:
+            print(e)
+            return
 
 
     def do_exit(self, line):
         "exits the program"
-    
-        # exits the program
+
         return True
 
 
