@@ -49,9 +49,11 @@ class Toolchain
   cli = HighLine.new
   @f = cli.ask "path: "
 
-  # get name and extension of input file
-  fname = @f.split(".")[0].delete('"')
-  fext = @f.split(".")[-1].delete('"')
+  # get name, directory, and extension of input file
+  path = Pathname.new(@f.delete('"'))
+  fname = path.to_s.split(".")[0] # remove extension
+  fdir  = path.dirname
+  fext  = path.extname.delete(".")
 
   case fext
   when "md", "txt"
@@ -61,13 +63,12 @@ class Toolchain
     self.convert_to_html(fname, fext, "markdown-auto_identifiers")
     self.add_para_breaks(fname)
   when "fodt", "rtf"
-    # todo: libreoffice conversion?
-    warn "unsupported file type: #{fext}"
+    `soffice --headless --convert-to html --outdir "#{fdir}" #{@f}`
+    self.add_para_breaks(fname)
   when "html"
     warn "file is already in html format"
   else
     self.convert_to_html(fname, fext, fext)
     self.add_para_breaks(fname)
   end
-
 end
