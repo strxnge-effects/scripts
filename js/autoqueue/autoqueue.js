@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import config from "./config.json" with { type: "json"; };
+import config from "./config.json" with { type: "json" };
 import jsdom from "jsdom";
 import prompt from "prompt";
 import tumblr from "tumblr.js";
