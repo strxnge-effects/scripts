@@ -64,4 +64,4 @@ class md_dl(cmd.Cmd):
 
 # run the CLI
 if __name__ == "__main__":
-     md_dl().cmdloop()
+    md_dl().cmdloop()

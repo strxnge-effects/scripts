@@ -8,11 +8,12 @@ class midiTools(cmd.Cmd):
     def save_file(self, filename, outputmidi):
         outputmidi.save(filename)
         print(f"saved to {filename}")
+        # todo: optional output specification
+
 
     def do_combine(self, line):
         """add the tracks from one midi file to another
         syntax: combine file1.mid file2.mid"""
-        # todo: optional output specification
         
         args = line.split()
         midi1 = MidiFile(args[0])
@@ -33,33 +34,11 @@ class midiTools(cmd.Cmd):
         except Exception as e:
             print(e)
 
-    def do_chordsplit(self, line):
-        """split overlapping notes into separate tracks
-        syntax: chordsplit file.mid"""
-        # todo: optional output specification
-        
-        midi = MidiFile(line)
-
-        try:
-            for track in midi.tracks:
-                for i, msg in enumerate(track):
-                    nextmsg = track[i + 1]
-                    
-                    if msg.type == "note_on" and nextmsg.type == "note_on":
-                        print(msg.note)
-
-            outputmidi = MidiFile(type=1)
-            outputmidi.ticks_per_beat = midi.ticks_per_beat
-
-            # self.save_file(f"{line.split(".")[0]}-split.mid", outputmidi)
-        except Exception as e:
-            print(e)
 
     def do_append(self, line):
         """append the events of file1 to the events of file2 (recommended only
         for single-track files)
         syntax: append file1.mid file2.mid"""
-        # todo: optional output specification
         
         args = line.split()
         midi1 = MidiFile(args[0])
@@ -76,6 +55,7 @@ class midiTools(cmd.Cmd):
             self.save_file(f"{args[0].split(".")[0]}-append.mid", outputmidi)
         except Exception as e:
             print(e)
+
 
     def do_exit(self, line):
         "exits the program"
