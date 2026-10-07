@@ -1,6 +1,14 @@
 echo off
 :begin
 set filetype=%~x1
+rem use libreoffice to convert filetypes unsupported by pandoc
+if %filetype%==.rtf (
+    set useSO=true
+)
+if %filetype%==.fodt (
+    set useSO=true
+)
+
 echo DOCUMENT-CONVERT
 echo ================
 echo select conversion for file %1:
@@ -18,7 +26,7 @@ goto begin
 
 
 :html
-if %filetype%==.rtf (
+if defined useSO (
     soffice --headless --convert-to html %1
 ) else (
     pandoc --wrap=none -t html %1 > "%~p1%~n1.html"
@@ -26,18 +34,18 @@ if %filetype%==.rtf (
 goto eof
 
 :md
-if %filetype%==.rtf (
-    soffice --headless --convert-to markdown %1
+if defined useSO (
+    soffice --headless --convert-to md %1
 ) else (
     pandoc --wrap=none -t markdown %1 > "%~p1%~n1.md"
 )
 goto eof
 
 :txt
-if %filetype%==.rtf (
+if defined useSO (
     soffice --headless --convert-to txt %1
 ) else (
-    pandoc --wrap=none -t txt %1 > "%~p1%~n1.txt"
+    pandoc --wrap=none %1 > "%~p1%~n1.txt"
 )
 goto eof
 
