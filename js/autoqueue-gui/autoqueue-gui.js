@@ -1,7 +1,17 @@
 #!/usr/bin/env node
 import config from "./config.json" with { type: "json" };
 import jsdom from "jsdom";
-import { QMainWindow, QWidget, QLabel, QLineEdit, QPushButton, QBoxLayout, Direction } from "@nodegui/nodegui";
+import {
+  QMainWindow,
+  QWidget,
+  QLabel,
+  QLineEdit,
+  QPushButton,
+  QMessageBox,
+  QBoxLayout,
+  ButtonRole,
+  Direction
+} from "@nodegui/nodegui";
 import prompt from "prompt";
 import tumblr from "tumblr.js";
 
@@ -23,7 +33,7 @@ labelSource.setText("source:");
 const lineSource = new QLineEdit();
 lineSource.setObjectName("lineSource");
 
-// >> image_url
+// >> image url
 const labelImageUrl = new QLabel();
 labelImageUrl.setObjectName("labelImageUrl");
 labelImageUrl.setText("image url:");
@@ -53,6 +63,12 @@ const buttonSubmit = new QPushButton();
 buttonSubmit.setObjectName("buttonSubmit");
 buttonSubmit.setText("submit");
 
+// >> messagebox
+const messageBox = new QMessageBox();
+const buttonAccept = new QPushButton();
+buttonAccept.setText("ok")
+messageBox.addButton(buttonAccept, ButtonRole.AcceptRole);
+
 rootLayout.addWidget(labelSource);
 rootLayout.addWidget(lineSource);
 rootLayout.addWidget(labelImageUrl);
@@ -74,7 +90,8 @@ const client = tumblr.createClient({
 });
 
 async function getQueue() {
-  let response = await client.blogQueue(`${config.blog_id}.tumblr.com`, { offset: -20 });
+  let response = await client.blogQueue(`${config.blog_id}.tumblr.com`,
+    { offset: -20 });
   // request last 20 queued posts from blog
 
   for (let obj of response.posts.reverse()) {
@@ -99,7 +116,8 @@ async function getPixivAuthor(pixivAuthorPage) {
     .then(response => response.text())
     .then(html => {
       let doc = new jsdom.JSDOM(html);
-      let author = doc.window.document.querySelector("title").textContent.split(" - ")[0];
+      let title = doc.window.document.querySelector("title");
+      let author = title.textContent.split(" - ")[0];
       return(author);
     });
 
@@ -107,53 +125,73 @@ async function getPixivAuthor(pixivAuthorPage) {
 }
 
 async function generatePostContents(result, author, date) {
-  await client.createPost(config.blog_id, {
-    content: [
-      {
-        type: "image",
-        media: {
-          "url": result.image_url,
-          "type": "image"
-        }
-      },
-      {
-        type: "text",
-        text: author,
-        formatting: [
-          {
-            "start": 0,
-            "end": author.length,
-            "type": "link",
-            "url": result.author
+  try {
+    await client.createPost(config.blog_id, {
+      content: [
+        {
+          type: "image",
+          media: {
+            "url": result.image_url,
+            "type": "image"
           }
-        ]
-      }
-    ],
-    publish_on: date,
-    source_url: result.source,
-    state: "queued",
-    tags: [
-      "art", "utau", result.tags
-    ]
-  });
+        },
+        {
+          type: "text",
+          text: author,
+          formatting: [
+            {
+              "start": 0,
+              "end": author.length,
+              "type": "link",
+              "url": result.author
+            }
+          ]
+        }
+      ],
+      publish_on: date,
+      source_url: result.source,
+      state: "queued",
+      tags: [
+        "art", "utau", result.tags
+      ]
+    });
 
-  console.log(`scheduled on ${config.blog_id} at ${date}`);
+    messageBox.setText(`scheduled on ${config.blog_id} at ${date}`);
+  } catch (error) {
+    console.error(error);
+    messageBox.setText(error.toString());
+  } finally {
+    messageBox.exec();
+  }
 }
 
 // > event handling
 buttonSubmit.addEventListener("clicked", () => {
-    (async () => {
-      let result = {
-        "source": lineSource.text(),
-        "image_url": lineImageUrl.text(),
-        "author": lineAuthor.text(),
-        "tags": lineTags.text()
-      };
-      let author = await getPixivAuthor(result.author);
-      let date = await getQueue();
+  try {
+      (async () => {
+        let result = {
+          "source": lineSource.text(),
+          "image_url": lineImageUrl.text(),
+          "author": lineAuthor.text(),
+          "tags": lineTags.text()
+        };
+        let author = await getPixivAuthor(result.author);
+        let date = await getQueue();
+  
+        generatePostContents(result, author, date);
+    })(); 
+  } catch (error) {
+    console.error(error);
+    messageBox.setText(error.toString());
+    messageBox.exec();
+  } finally {
+    // prevent multiple requests at the same time
+    buttonSubmit.setDisabled(true);
+  }
+});
 
-      generatePostContents(result, author, date);
-  })();
+buttonAccept.addEventListener("clicked", () => {
+  buttonSubmit.setEnabled(true);
 });
 
 win.show();
